@@ -30,7 +30,11 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        $data =[
+            "users_status"=> $this->user->getUserStatus(),
+            "departments"=> $this->user->getDepartments()
+        ];
+        return $data;
     }
 
     /**

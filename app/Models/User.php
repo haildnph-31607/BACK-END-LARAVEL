@@ -55,4 +55,22 @@ class User extends Authenticatable
         ->paginate();
         return response()->json($user);
     }
+    public function getUserStatus(){
+        $status = DB::table('users_status')
+        ->select(
+            "id as value",
+            "name as label"
+        )
+        ->get();
+        return response()->json($status);
+    }
+    public function getDepartments(){
+        $departments = DB::table('departments')
+        ->select(
+            "id as value",
+            "name as label"
+        )
+        ->get();
+        return response()->json($departments);
+    }
 }
