@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Facades\DB;
 
 class User extends Authenticatable
 {
@@ -41,4 +42,17 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    public function ShowUser($id){
+        return DB::table('users')
+        ->where('id',$id)
+        ->get();
+    }
+    public function Users(){
+        $user =  DB::table('users')
+        ->join('departments', 'users.departments_id', '=', 'departments.id')
+        ->join('users_status', 'users.status_id', '=', 'users_status.id')
+        ->select('users.*', 'departments.name as departments', 'users_status.name as users_status')
+        ->paginate();
+        return response()->json($user);
+    }
 }
