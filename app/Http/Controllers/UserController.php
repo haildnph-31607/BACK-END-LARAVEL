@@ -45,7 +45,22 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+           [
+            "username"=>"required|unique:users,email",
+            "name"=>"required",
+            "email"=>"required|email",
+            "password"=>"required|password",
+            "departments_id"=>"required",
+            "users_status"=>"required",
+            
+
+
+
+
+
+           ]
+        ]);
     }
 
     /**
