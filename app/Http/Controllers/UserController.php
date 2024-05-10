@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -52,9 +52,22 @@ class UserController extends Controller
             "password"=>"required|confirmed",
             "departments_id"=>"required",
             "status_id"=>"required",
-          
+
         ]);
-       
+        // return $request['status_id'];
+        // $users = $request->all(['password','password_confirmation']);
+        // $users['password'] = Hash::make($request['password']);
+        // User::create($users);
+        User::create([
+              "username"=>$request['username'],
+              "name"=>$request['name'],
+              "email"=>$request['email'],
+              "password"=>Hash::make($request['password']),
+              "departments_id"=>$request['departments_id'],
+              "status_id"=>$request['status_id'],
+
+
+        ]);
     }
 
     /**
@@ -65,7 +78,7 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        
+
        $data = $this->user->ShowUser($id);
        return $data;
     }
