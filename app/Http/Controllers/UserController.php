@@ -91,7 +91,13 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        //
+        $user = User::find($id);
+        return response()->json([
+            "users"=> $user,
+            "departments" => $this->user->getDepartments(),
+            "users_status" => $this->user->getUserStatus(),
+              
+        ]);
     }
 
     /**
@@ -103,7 +109,36 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validated = $request->validate([
+            "username"=>"required|unique:users,username,".$id,
+            "name"=>"required|max:255",
+            "email"=>"required|email",
+            
+            "departments_id"=>"required",
+            "status_id"=>"required",
+
+        ]);
+        User::find($id)->update([
+            "username"=>$request['username'],
+            "name"=>$request['name'],
+            "email"=>$request['email'],
+         
+            "departments_id"=>$request['departments_id'],
+            "status_id"=>$request['status_id'],
+        ]);
+        // thích dùng tiếng anh chứ k phải kh chuyển rule sang tiếng việt nhaa
+        if($request['change_password'] == true){
+            $validated = $request->validate([
+                "password"=>"required|confirmed",
+    
+            ]);
+            User::find($id)->update([
+              
+                "password"=>Hash::make($request['password']),
+                "change_password_at"=> NOW()
+                
+            ]);
+        }
     }
 
     /**
@@ -114,6 +149,6 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        User::find($id)->delete();
     }
 }

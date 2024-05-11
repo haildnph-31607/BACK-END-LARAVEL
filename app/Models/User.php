@@ -50,6 +50,7 @@ class User extends Authenticatable
     }
     public function Users(){
         $user =  DB::table('users')
+        // ->where('users.id','!=','1')
         ->join('departments', 'users.departments_id', '=', 'departments.id')
         ->join('users_status', 'users.status_id', '=', 'users_status.id')
         ->select('users.*', 'departments.name as departments', 'users_status.name as users_status')
